@@ -33,7 +33,9 @@ public class JDBCSelectTest {
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery(); // 결과를 받아야 힐 때
 			
-			while(rs.next()) {
+			
+			//db쿼리에서 압축을 해 결과를 rs에 넣을때 반복문으로 압축해제를 해준 느낌.
+			while(rs.next()) { // next() =  아래의 명령사항이 있을땐 true 값을 없을땐 false 로 반복문을 빠져나온다.
 				int id = rs.getInt("id");
 				String regDate = rs.getString("regDate");
 				String updateDate = rs.getString("updateDate");
