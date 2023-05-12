@@ -25,7 +25,7 @@ public class MemberDao {
 		
 	}
 
-	public void dojoin(String loginId, String loginPw, String name) {
+	public void doJoin(String loginId, String loginPw, String name) {
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO member");
 		sql.append("SET regDate = NOW()");

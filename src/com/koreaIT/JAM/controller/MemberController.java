@@ -17,7 +17,7 @@ public class MemberController {
 		this.memberService = new MemberService(conn);
 	}
 
-	public void dojoin() {
+	public void doJoin() {
 		System.out.println("== 회원 가입 ==");
 
 		String loginId = null;
@@ -85,7 +85,7 @@ public class MemberController {
 			break;
 		}
 
-		memberService.dojoin(loginId,loginPw,name);
+		memberService.doJoin(loginId,loginPw,name);
 
 		System.out.printf("%s님 환영합니다~\n", name);
 

@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import com.koreaIT.JAM.Util.DBUtil;
 import com.koreaIT.JAM.Util.SecSql;
+import com.koreaIT.JAM.controller.ArticleController;
 import com.koreaIT.JAM.controller.MemberController;
 
 public class App {
@@ -20,7 +21,7 @@ public class App {
 
 		Connection conn = null; // 접속 정보를 저장하기 위한 역할
 
-		List<Article> articles = new ArrayList<>();
+		
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -29,6 +30,7 @@ public class App {
 			conn = DriverManager.getConnection(url, "root", "");
 			
 			MemberController memberController = new MemberController(conn,sc);
+			ArticleController articleController = new ArticleController(conn,sc);
 			
 			
 
@@ -41,31 +43,16 @@ public class App {
 					break;
 				}
 //				ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ회원가입ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+				
 				if (cmd.equals("member join")) {
-					memberController.dojoin();
+					memberController.doJoin();
 				}
 				
 
 //				ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ작성ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 				else if (cmd.equals("article write")) {
-					System.out.println("== 게시물 작성 ==");
-
-					System.out.printf("제목 : ");
-					String title = sc.nextLine();
-					System.out.printf("내용 : ");
-					String body = sc.nextLine();
-
-					SecSql sql = new SecSql();
-					sql.append("INSERT INTO article");
-					sql.append("SET regDate = NOW()");
-					sql.append(", updateDate = NOW()");
-					sql.append(", title = ?", title);
-					sql.append(", `body` = ?", body);
-
-					int id = DBUtil.insert(conn, sql);
-
-					System.out.printf("%d번 게시글이 생성되었습니다.\n", id);
+					articleController.doWrite(sc);
 
 				}
 
@@ -73,29 +60,7 @@ public class App {
 
 				else if (cmd.equals("article list")) {
 
-					SecSql sql = new SecSql();
-
-					sql.append("SELECT *");
-					sql.append("FROM article");
-					sql.append("ORDER BY id DESC");
-
-					List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
-
-					for (Map<String, Object> articleMap : articleListMap) {
-						articles.add(new Article(articleMap));
-					}
-
-					if (articles.size() == 0) {
-						System.out.println("존재하는 게시물이 없습니다.");
-						continue;
-					}
-					System.out.println("== 게시물 리스트==");
-					System.out.println(" 번호   | 제목   | 날짜   ");
-
-					for (Article article : articles) {
-						System.out.printf("%d    |%s    |%s    \n", article.id, article.title, article.regDate);
-
-					}
+					articleController.showList();
 
 				}
 //				ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ상세보기ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
