@@ -3,8 +3,8 @@ package com.koreaIT.JAM.service;
 import java.sql.Connection;
 import java.util.Map;
 
-import com.koreaIT.JAM.Member;
 import com.koreaIT.JAM.Dao.MemberDao;
+import com.koreaIT.JAM.dto.Member;
 
 public class MemberService {
 

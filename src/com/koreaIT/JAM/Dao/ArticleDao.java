@@ -17,12 +17,13 @@ public class ArticleDao {
 
 	}
 
-	public int doWrite(String title, String body) {
+	public int doWrite(String title, String body , int loginedMemberId) {
 
 		SecSql sql = new SecSql();
 		sql.append("INSERT INTO article");
 		sql.append("SET regDate = NOW()");
 		sql.append(", updateDate = NOW()");
+		sql.append(", memberId = ?", loginedMemberId);
 		sql.append(", title = ?", title);
 		sql.append(", `body` = ?", body);
 

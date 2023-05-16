@@ -3,8 +3,9 @@ package com.koreaIT.JAM.controller;
 import java.sql.Connection;
 import java.util.Scanner;
 
-import com.koreaIT.JAM.Member;
+import com.koreaIT.JAM.dto.Member;
 import com.koreaIT.JAM.service.MemberService;
+import com.koreaIT.JAM.session.Session;
 
 public class MemberController {
 
@@ -24,6 +25,11 @@ public class MemberController {
 	String name = null;
 
 	public void doJoin() {
+		
+		if(Session.isLogided()) {
+			System.out.println("로그아웃 후 이용해주세요.");
+			return;
+		}
 		System.out.println("== 회원 가입 ==");
 
 		while (true) {
@@ -93,6 +99,11 @@ public class MemberController {
 	}
 
 	public void doLogin() {
+		
+		if(!Session.isLogided() ) {
+			System.out.println("이미 로그인 된 상태입니다.");
+			return;
+		}
 
 		System.out.println("== 로그인 ==");
 		while (true) {
@@ -123,10 +134,26 @@ public class MemberController {
 				return;
 			}
 			 System.out.printf("%s 님 환영합니다.\n", member.name);
+			 
+			
+			 Session.login(member);
 			 break;
 
 		}
 
+	}
+
+	public void doLogout() {
+		
+		if(Session.isLogided() == false) { // 또는 !Session.isLogided() 
+			System.out.println("로그아웃 상태입니다.");
+			return;
+		}
+		Session.logout();
+		System.out.println("로그아웃 되었습니다.");
+		
+		
+		
 	}
 
 }
