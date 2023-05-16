@@ -60,7 +60,7 @@ public class ArticleController {
 	}
 
 	public void showDetail(String cmd) {
-		
+		 
 		int id = Integer.parseInt(cmd.split(" ")[2]);		
 
 		Article article = articleService.getArticle(id);
@@ -77,6 +77,50 @@ public class ArticleController {
 		System.out.printf("작성날짜 : %s\n", article.regDate);
 		System.out.printf("수정날짜 : %s\n", article.updateDate);
 
+		
+	}
+
+	public void doModify(String cmd) {
+		int id = Integer.parseInt(cmd.split(" ")[2]);	
+
+ 
+		int articleCount = articleService.getArticleCount(id);
+
+		if (articleCount == 0) {
+			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+			return;
+		}
+
+		System.out.printf("%d번 게시글을 수정하겠습니다.\n", id);
+		System.out.printf("수정할 제목 : ");
+		String title = sc.nextLine();
+		System.out.printf("수정할 내용 : ");
+		String body = sc.nextLine();
+
+		
+
+		System.out.printf("%d번 게시글이 수정되었습니다\n", id);
+		
+	}
+
+	public void doDelete(String cmd) {
+		int id = Integer.parseInt(cmd.split(" ")[2]);	
+
+		
+
+		int articleCount = articleService.getArticleCount(id);
+
+		if (articleCount == 0) {
+
+			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+			return;
+
+		}
+		articleService.doDelete(id);
+		
+		System.out.printf("%d번 게시글을 삭제하겠습니다.\n", id);
+
+		System.out.printf("%d번 게시글이 삭제되었습니다\n", id);
 		
 	}
 	

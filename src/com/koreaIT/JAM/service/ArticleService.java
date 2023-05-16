@@ -8,6 +8,7 @@ import java.util.Map;
 import com.koreaIT.JAM.Article;
 import com.koreaIT.JAM.Dao.ArticleDao;
 import com.koreaIT.JAM.Util.DBUtil;
+import com.koreaIT.JAM.Util.SecSql;
 
 public class ArticleService {
 
@@ -44,13 +45,28 @@ public class ArticleService {
 		
 		Map<String, Object> articleMap = articleDao.getArticle(id);
 		if (articleMap.isEmpty()) {
-			
+			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return null;
 		}
 		
 		
 		
 		return new Article(articleMap);
+	}
+
+	public void doModify( String cmd ,String title, String body,int id ) {
+	 
+		
+		articleDao.doModify( cmd , title, body, id );
+	}
+
+	public int getArticleCount(int id) {
+		 
+		return articleDao.getArticleCount( id);
+	}
+
+	public void doDelete(int id) {
+		 articleDao.doDelete(id);
 	}
 
 	
