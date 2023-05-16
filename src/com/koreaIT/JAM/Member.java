@@ -5,11 +5,11 @@ import java.util.Map;
 
 public class Member {
 	int id;
-	LocalDateTime regDate;
-	LocalDateTime updateDate;
-	String loginId;
-	String loginPw;
-	String name;
+	public LocalDateTime regDate;
+	public LocalDateTime updateDate;
+	public String loginId;
+	public String loginPw;
+	public String name;
 	
 	
  
