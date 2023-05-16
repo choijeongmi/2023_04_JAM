@@ -6,11 +6,11 @@ CREATE TABLE article(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
-    memberId INT UNSIGNED NOT NULL,
     title VARCHAR(100) NOT NULL,
     `body` TEXT NOT NULL
 );
 
+alter table article add column memberId int unsigned not null after updateDate;
 
 CREATE TABLE `member`(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -21,31 +21,33 @@ CREATE TABLE `member`(
     `name` VARCHAR(50) NOT NULL
 );
 
+/*
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
-memberId = 1
+memberId = 1,
 title = CONCAT('제목', RAND()),
 `body` = CONCAT('내용', RAND());
+*/
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
-memberId = 1
+memberId = 1,
 title = '제목1',
 `body` = '내용1';
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
-memberId = 1
+memberId = 1,
 title = '제목2',
 `body` = '내용2';
 
 INSERT INTO article
 SET regDate = NOW(),
 updateDate = NOW(),
-memberId = 1
+memberId = 1,
 title = '제목3',
 `body` = '내용3';
 
@@ -55,8 +57,6 @@ updateDate = NOW(),
 loginId = 'test1',
 loginPw = 'test1',
 `name` = 'test1';
-
- 
 
 SELECT * FROM article;
 SELECT * FROM `member`;
