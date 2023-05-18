@@ -100,7 +100,7 @@ public class MemberController {
 
 	public void doLogin() {
 		
-		if(!Session.isLogided() ) {
+		if(Session.isLogided()) {
 			System.out.println("이미 로그인 된 상태입니다.");
 			return;
 		}

@@ -16,14 +16,14 @@ public class ArticleService {
 		this.articleDao = new ArticleDao(conn);
 	}
 
-	public int doWrite(String title, String body , int loginedMemberId) {
+	public int doWrite(String title, String body, int loginedMemberId) {
 
 		return articleDao.doWrite(title, body, loginedMemberId);
 
 	}
 
-	public List<Article> getArticles() {
-		List<Map<String, Object>> articleListMap = articleDao.getArticles();
+	public List<Article> getArticles(String searchKeyword) {
+		List<Map<String, Object>> articleListMap = articleDao.getArticles(searchKeyword);
 
 		List<Article> articles = new ArrayList<>();
 
@@ -45,9 +45,9 @@ public class ArticleService {
 		return new Article(articleMap);
 	}
 
-	public void doModify(String cmd, String title, String body, int id) {
+	public void doModify(String title, String body, int id) {
 
-		articleDao.doModify(cmd, title, body, id);
+		articleDao.doModify(title, body, id);
 	}
 
 	public int getArticleCount(int id) {
@@ -59,6 +59,15 @@ public class ArticleService {
 		articleDao.doDelete(id);
 	}
 
-	 
+	public int increaseVCnt(int id) {
+		
+		return articleDao.increaseVCnt(id);
+
+	}
+
+//	public int getwriterId(int id) {
+//		 
+//		return articleDao.getwriterId(id);
+//	}
 
 }

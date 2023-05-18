@@ -41,23 +41,30 @@ public class ArticleController {
 
 	}
 
-	public void showList() {
+	public void showList(String cmd) {
+		
+		String searchKeyword = cmd.substring("article list".length()).trim();
 
-		List<Article> articles = articleService.getArticles();
+		List<Article> articles = articleService.getArticles(searchKeyword);
 
 		if (articles.size() == 0) {
 			System.out.println("존재하는 게시물이 없습니다.");
 			return;
 		}
 		System.out.println("== 게시물 리스트==");
-		System.out.println(" 번호   | 제목   | 작성자	|	날짜   ");
+		if(searchKeyword.length() > 0) {
+			System.out.println("검색어 : "+ searchKeyword);
+			
+		}
+		System.out.println(" 번호   | 제목   | 작성자	|	날짜   |	조회수");
 
 		for (Article article : articles) {
-			System.out.printf("%d    |%s   	|%s		|%s    \n", article.id, article.title,article.writerName,  Util.datetimeFormat(article.regDate));
+			System.out.printf("%d    |%s   	|%s		|%s    \n", article.id, article.title, article.writerName,
+					Util.datetimeFormat(article.regDate), article.vCnt);
 
 		}
 
-		articleService.getArticles();
+		articleService.getArticles(searchKeyword);
 
 	}
 
@@ -65,20 +72,22 @@ public class ArticleController {
 
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 
-		Article article = articleService.getArticle(id);
+		int affectedRow = articleService.increaseVCnt(id);
 
-		if (article == null) {
+		if (affectedRow == 0) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 		}
+		Article article = articleService.getArticle(id);
 
 		System.out.printf("== %d번 게시물 상세보기==\n", id);
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
 		System.out.printf("작성자 : %s\n", article.writerName);
+		System.out.printf("조회수 : %s\n", article.vCnt);
 		System.out.printf("작성날짜 : %s\n", Util.datetimeFormat(article.regDate));
-		System.out.printf("수정날짜 : %s\n",  Util.datetimeFormat(article.updateDate));
+		System.out.printf("수정날짜 : %s\n", Util.datetimeFormat(article.updateDate));
 
 	}
 
@@ -90,10 +99,15 @@ public class ArticleController {
 
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 
-		int articleCount = articleService.getArticleCount(id);
+		Article article = articleService.getArticle(id);
 
-		if (articleCount == 0) {
+		if (article == null) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+			return;
+		}
+
+		if (article.memberId != Session.loginedMemberId) {
+			System.out.println("게시글 수정 권한이 없습니다.");
 			return;
 		}
 
@@ -102,6 +116,8 @@ public class ArticleController {
 		String title = sc.nextLine();
 		System.out.printf("수정할 내용 : ");
 		String body = sc.nextLine();
+
+		articleService.doModify(title, body, id);
 
 		System.out.printf("%d번 게시글이 수정되었습니다\n", id);
 
@@ -115,13 +131,18 @@ public class ArticleController {
 
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 
-		int articleCount = articleService.getArticleCount(id);
+		Article article = articleService.getArticle(id);
 
-		if (articleCount == 0) {
+		if (article == null) {
 
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
 
+		}
+
+		if (article.memberId != Session.loginedMemberId) {
+			System.out.println("게시글 수정 권한이 없습니다.");
+			return;
 		}
 		articleService.doDelete(id);
 

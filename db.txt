@@ -10,7 +10,8 @@ CREATE TABLE article(
     `body` TEXT NOT NULL
 );
 
-alter table article add column memberId int unsigned not null after updateDate;
+ALTER TABLE article ADD COLUMN memberId INT UNSIGNED NOT NULL AFTER updateDate;
+ALTER TABLE article ADD COLUMN vCnt INT UNSIGNED NOT NULL DEFAULT 0;
 
 CREATE TABLE `member`(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -51,12 +52,26 @@ memberId = 1,
 title = '제목3',
 `body` = '내용3';
 
+INSERT INTO article
+SET regDate = NOW(),
+updateDate = NOW(),
+memberId = 2,
+title = '체체',
+`body` = '체체';
+
 INSERT INTO `member`
 SET regDate = NOW(),
 updateDate = NOW(),
 loginId = 'test1',
 loginPw = 'test1',
 `name` = 'test1';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = 'cheche1',
+loginPw = 'cheche1',
+`name` = '체체';
 
 SELECT * FROM article;
 SELECT * FROM `member`;
